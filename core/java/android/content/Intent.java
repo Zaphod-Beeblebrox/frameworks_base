@@ -2474,6 +2474,25 @@ public class Intent implements Parcelable, Cloneable {
             "android.intent.action.PRE_BOOT_COMPLETED";
 
     /**
+     * Broadcast Action: hook for start service before the BOOT_COMPLETED broadcast.
+     *
+     * add by bonovo zbiao
+     * @hide
+     */
+    public static final String ACTION_PRE_LAUNCHER =
+            "android.intent.action.PRE_LAUNCHER";
+
+    /**
+     * Broadcast Action: hook for start service before the BOOT_COMPLETED broadcast.
+     *
+     * add by bonovo zbiao
+     * @hide
+     */
+    @SdkConstant(SdkConstantType.INTENT_CATEGORY)
+    public static final String CATEGORY_APP_BT_PHONE = "android.intent.category.APP_BT_PHONE";
+
+
+    /**
      * Broadcast to a specific application to query any supported restrictions to impose
      * on restricted users. The broadcast intent contains an extra
      * {@link #EXTRA_RESTRICTIONS_BUNDLE} with the currently persisted
