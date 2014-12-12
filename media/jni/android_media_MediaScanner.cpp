@@ -19,6 +19,7 @@
 #define LOG_TAG "MediaScannerJNI"
 #include <utils/Log.h>
 #include <utils/threads.h>
+#include <utils/Unicode.h>
 #include <media/mediascanner.h>
 #include <media/stagefright/StagefrightMediaScanner.h>
 
@@ -135,6 +136,12 @@ public:
                                     mediaScannerClientInterface,
                                     "setMimeType",
                                     "(Ljava/lang/String;)V");
+/* $_rbox_$_modify_$ modified by hh for BD  2013-07-22 */
+            mScanBDDirectoryMethodID = env->GetMethodID(
+                                    mediaScannerClientInterface,
+                                    "scanBDDirectory",
+                                    "(Ljava/lang/String;JJ)V");
+/* $_rbox_$_modify_$*/
         }
     }
 
@@ -215,12 +222,31 @@ public:
         return checkAndClearExceptionFromCallback(mEnv, "setMimeType");
     }
 
+/* $_rbox_$_modify_$ modified by hh for BD scan 2013-07-22 */    
+    virtual status_t scanBDDirectory(const char* path, long long lastModified,
+            long long fileSize)
+    {
+        jstring pathStr;
+        if ((pathStr = mEnv->NewStringUTF(path)) == NULL) {
+            mEnv->ExceptionClear();
+            return NO_MEMORY;
+        }
+
+        mEnv->CallVoidMethod(mClient, mScanBDDirectoryMethodID, pathStr, lastModified,fileSize);
+
+        mEnv->DeleteLocalRef(pathStr);
+        return checkAndClearExceptionFromCallback(mEnv, "scanBDDirectory");
+    }
+/* $_rbox_$_modify_$*/
 private:
     JNIEnv *mEnv;
     jobject mClient;
     jmethodID mScanFileMethodID;
     jmethodID mHandleStringTagMethodID;
     jmethodID mSetMimeTypeMethodID;
+/* $_rbox_$_modify_$ modified by hh for BD  2013-07-22 */    
+    jmethodID mScanBDDirectoryMethodID;
+/* $_rbox_$_modify_$*/
 };
 
 
